@@ -1,0 +1,412 @@
+.App {
+  text-align: center;
+}
+
+/* General Styles */
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container Styles */
+.container {
+  border: 1px solid #333;
+  padding: 1rem;
+  margin: 0.5rem;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+}
+
+/* Title Styles */
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #bb86fc;
+  text-align: center;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Hover Effects */
+.pages b:hover {
+  background-color: #bb86fc;
+  color: #121212;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Active Page Styles */
+.actualPage {
+  font-size: 1rem;
+  background-color: #bb86fc;
+  color: #121212;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+/* App Title Styles */
+.app-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #4e415e;
+  text-align: center;
+  margin: 2rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #bb86fc, 0 0 20px #bb86fc, 0 0 30px #bb86fc, 0 0 40px #bb86fc, 0 0 50px #bb86fc, 0 0 60px #bb86fc, 0 0 70px #bb86fc;
+  }
+  to {
+    text-shadow: 0 0 20px #bb86fc, 0 0 30px #bb86fc, 0 0 40px #bb86fc, 0 0 50px #bb86fc, 0 0 60px #bb86fc, 0 0 70px #bb86fc, 0 0 80px #bb86fc;
+  }
+}
+
+/* Button Styles */
+button {
+  background-color: #bb86fc;
+  color: #121212;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  background-color: #3700b3;
+  color: #ffffff;
+}
+
+body {
+  margin: 1rem;
+}
+
+/* Search Bar Styles */
+.searchBar {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.searchBar input[type=text] {
+  width: 50%;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  border: 2px solid #bb86fc;
+  border-radius: 4px;
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.searchBar input[type=text]:focus {
+  background-color: #121212;
+  border-color: #3700b3;
+  outline: none;
+}
+
+.searchBar button {
+  padding: 0.5rem 1rem;
+  margin-left: 1rem;
+  background-color: #bb86fc;
+  color: #121212;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.searchBar button:hover {
+  background-color: #3700b3;
+  color: #ffffff;
+}
+
+/* Movies Styles */
+.movies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: space-around;
+}
+
+.movie {
+  margin: 1rem 0.7rem;
+  border: 1px solid #333;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+}
+
+.movie img {
+  width: 220px;
+  height: 350px;
+  border-radius: 8px 8px 0 0;
+}
+
+.movie-title {
+  width: 220px;
+  padding: 0.5rem;
+  text-align: center;
+  color: #bb86fc;
+}
+
+.movie-title p {
+  font-weight: bold;
+}
+
+/* Movie Details Button Styles */
+.movie-detailsBtn {
+  padding: 0.5rem 2rem;
+  font-size: 0.8rem;
+  font-weight: bolder;
+  transition: 0.5s;
+  background-color: #bb86fc;
+  color: #121212;
+  border-radius: 5px;
+  border: 1px solid #bb86fc;
+}
+
+.movie-detailsBtn:hover {
+  background-color: #3700b3;
+  color: #ffffff;
+  border: 1px solid #3700b3;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-main {
+  position: fixed;
+  background: #1e1e1e;
+  width: 80%;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 8px;
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+
+.modal-body {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.modal-info {
+  margin-top: 0.5rem;
+  margin-right: 1rem;
+}
+
+.modal-img {
+  padding: 1rem;
+}
+
+.modal-img img {
+  width: fit-content;
+  height: auto;
+  border: 2px solid #bb86fc;
+  border-radius: 8px;
+}
+
+.modal-info {
+  margin-left: 2rem;
+  text-align: left;
+  color: #e0e0e0;
+}
+
+/* Modal Close Button Styles */
+.modal-closebtn {
+  padding: 1rem 2rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  bottom: 50%;
+  transition: 0.5s;
+  background-color: #bb86fc;
+  color: #121212;
+  border-radius: 5px;
+  border: 1px solid #bb86fc;
+}
+
+.modal-closebtn:hover {
+  background-color: #3700b3;
+  color: #ffffff;
+  border: 1px solid #3700b3;
+}
+
+/* Pages Styles */
+.pages {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.pages b {
+  border-radius: 5px;
+  border: 1px solid #bb86fc;
+  padding: 1.5rem;
+  margin: 0.5rem;
+  transition: 0.5s;
+}
+
+.pages b:hover {
+  background-color: #bb86fc;
+  color: #121212;
+}
+
+.actualPage {
+  font-size: 1.5rem;
+  background-color: #bb86fc;
+  color: #121212;
+}
+
+/* Responsive Styles */
+@media only screen and (max-width: 675px) {
+  .movie {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 1rem 0.5rem;
+    border: 1px solid #333;
+    height: 320px;
+  }
+
+  .movie img {
+    width: 140px;
+    height: 210px;
+  }
+
+  .movie-title {
+    font-size: 0.8rem;
+    width: 140px;
+    height: 70px;
+  }
+
+  .movie-detailsBtn {
+    width: 100%;
+    height: auto;
+    font-size: 0.8rem;
+    font-weight: bolder;
+  }
+
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 530px;
+    font-size: 0.8rem;
+  }
+
+  .modal-closebtn {
+    padding: 0.4rem 2rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    bottom: 50%;
+    border: 1px solid #bb86fc;
+    transition: 0.5s;
+    background-color: #bb86fc;
+    color: #121212;
+  }
+
+  .modal-closebtn:hover {
+    background-color: #3700b3;
+    color: #ffffff;
+    border: 1px solid #3700b3;
+  }
+}
+
+@media only screen and (min-width: 676px) and (max-width: 768px) {
+  .searchBar {
+    display: flex;
+    justify-content: center;
+  }
+
+  .searchBar input[type=text] {
+    width: 50%;
+    height: 1.5rem;
+    font-size: 2rem;
+  }
+
+  .searchBar button {
+    padding: 0rem 2rem;
+    font-weight: bold;
+    font-size: 1.4rem;
+  }
+
+  .movie img {
+    width: 180px;
+    height: 250px;
+  }
+
+  .movie-title {
+    font-size: 0.8rem;
+    width: 180px;
+    height: 65px;
+  }
+
+  .movie-detailsBtn {
+    width: 100%;
+    height: auto;
+    font-size: 0.8rem;
+    font-weight: bolder;
+    margin-top: 0.5rem;
+  }
+
+  .modal-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 400px;
+    font-size: 1rem;
+  }
+
+  .modal-img img {
+    width: 200px;
+    height: auto;
+  }
+
+  .pages {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .pages b {
+    border-radius: 5px;
+    border: 1px solid #bb86fc;
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .pages b:hover {
+    background-color: #bb86fc;
+    color: #121212;
+  }
+
+  .actualPage {
+    font-size: 1rem;
+    background-color: #bb86fc;
+    color: #121212;
+  }
+}
