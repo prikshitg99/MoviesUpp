@@ -11,6 +11,26 @@ body {
   padding: 0;
 }
 
+/* Dark Mode Styles */
+.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.dark-mode .app-title {
+  color: #252253;
+}
+
+/* Light Mode Styles */
+.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.light-mode .app-title {
+  color: #362946;
+}
+
 /* Container Styles */
 .container {
   border: 1px solid #333;
@@ -18,6 +38,10 @@ body {
   margin: 0.5rem;
   background-color: #1e1e1e;
   border-radius: 8px;
+}
+
+.light-mode .container {
+  background-color: #f0f0f0;
 }
 
 /* Title Styles */
@@ -28,6 +52,10 @@ body {
   text-align: center;
   margin-bottom: 1rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.light-mode .title {
+  color: #4e415e;
 }
 
 /* Hover Effects */
@@ -50,7 +78,6 @@ body {
 .app-title {
   font-size: 3rem;
   font-weight: bold;
-  color: #4e415e;
   text-align: center;
   margin: 2rem 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -105,10 +132,20 @@ body {
   transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
+.light-mode .searchBar input[type=text] {
+  background-color: #ffffff;
+  color: #000000;
+}
+
 .searchBar input[type=text]:focus {
   background-color: #121212;
   border-color: #3700b3;
   outline: none;
+}
+
+.light-mode .searchBar input[type=text]:focus {
+  background-color: #ffffff;
+  border-color: #3700b3;
 }
 
 .searchBar button {
@@ -143,6 +180,10 @@ body {
   border-radius: 8px;
 }
 
+.light-mode .movie {
+  background-color: #f0f0f0;
+}
+
 .movie img {
   width: 220px;
   height: 350px;
@@ -154,6 +195,10 @@ body {
   padding: 0.5rem;
   text-align: center;
   color: #bb86fc;
+}
+
+.light-mode .movie-title {
+  color: #4e415e;
 }
 
 .movie-title p {
@@ -199,6 +244,10 @@ body {
   border-radius: 8px;
 }
 
+.light-mode .modal-main {
+  background: #ffffff;
+}
+
 .display-block {
   display: block;
 }
@@ -233,6 +282,10 @@ body {
   margin-left: 2rem;
   text-align: left;
   color: #e0e0e0;
+}
+
+.light-mode .modal-info {
+  color: #000000;
 }
 
 /* Modal Close Button Styles */
@@ -275,6 +328,7 @@ body {
   color: #121212;
 }
 
+/* Active Page Styles */
 .actualPage {
   font-size: 1.5rem;
   background-color: #bb86fc;
@@ -409,4 +463,24 @@ body {
     background-color: #bb86fc;
     color: #121212;
   }
+}
+
+/* Toggle Mode Button Styles */
+.toggle-mode-btn {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background-color: #bb86fc;
+  color: #121212;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.toggle-mode-btn:hover {
+  background-color: #3700b3;
+  color: #ffffff;
 }

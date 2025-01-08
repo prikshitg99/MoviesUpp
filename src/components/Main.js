@@ -15,6 +15,8 @@ const Main = () => {
   const [movies, setMovies] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [movieDetails, setMovieDetails] = useState({});
+  const [message, setMessage] = useState('');
+  const [darkMode, setDarkMode] = useState(true);
 
   //modal
   const [show, setShow] = useState(false);
@@ -41,7 +43,7 @@ const Main = () => {
 
   const hideModal = () => {
     setShow(false);
-    setMovieDetails();
+    setMovieDetails({});
   };
 
   const handleClose = () => {
@@ -56,9 +58,13 @@ const Main = () => {
           api + apiKey + `&s=${name}` + "&type=movie" + `&page=${pageNumber}`
         )
         .then((res) => {
-          if (res) {
+          if (res.data.Response === "True") {
             setMovies(res.data.Search);
             setTotalResults(res.data.totalResults);
+            setMessage('');
+          } else {
+            setMovies([]);
+            setMessage('No movie found for the search term');
           }
         });
       return;
@@ -66,10 +72,14 @@ const Main = () => {
     axios
       .get(api + apiKey + `&s=${name}` + "&type=movie" + "&page=1")
       .then((res) => {
-        if (res) {
+        if (res.data.Response === "True") {
           setMovies(res.data.Search);
           setTotalResults(res.data.totalResults);
           setCurrentPage(1);
+          setMessage('');
+        } else {
+          setMovies([]);
+          setMessage('No movie found for the search term');
         }
       });
   };
@@ -114,8 +124,15 @@ const Main = () => {
     window.scrollTo(0, 0);
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <div>
+    <div className={darkMode ? 'dark-mode' : 'light-mode'}>
+      <button onClick={toggleDarkMode} className="toggle-mode-btn">
+        {darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+      </button>
       <form>
         <div className='searchBar'>
           <label htmlFor='name'></label>
@@ -131,7 +148,9 @@ const Main = () => {
         </div>
       </form>
 
-      {movies ? (
+      {message && <p>{message}</p>}
+
+      {movies.length > 0 ? (
         <div className='movies'>
           {movies.map((movie) => (
             <div key={movie.imdbID} className='movie'>
