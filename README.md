@@ -1,5 +1,6 @@
 React Movie Database App 🎥
-A simple React app using the OMDb API to search and display movies with features like pagination, detailed views, and responsive design.
+A React app using the OMDb API to search and display movies with features like pagination, detailed views, and responsive design.
+View Project Online: https://moviesupp-prikshitg99.netlify.app/
 
 # Features
 Search Movies: Filter movies by title.
