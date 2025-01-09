@@ -26,8 +26,7 @@ moviesupp/
 └── package.json
 
 # Install Dependencies:
-bash
-Copy code
+
 npm install
 
 
