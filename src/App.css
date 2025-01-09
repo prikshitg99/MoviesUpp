@@ -165,6 +165,46 @@ body {
   color: #ffffff;
 }
 
+/* Filter Container Styles */
+.filter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.filter-container label {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  color: #bb86fc;
+}
+
+.filter-container select {
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  border: 2px solid #bb86fc;
+  border-radius: 4px;
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.light-mode .filter-container select {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.filter-container select:focus {
+  background-color: #121212;
+  border-color: #3700b3;
+  outline: none;
+}
+
+.light-mode .filter-container select:focus {
+  background-color: #ffffff;
+  border-color: #3700b3;
+}
+
 /* Movies Styles */
 .movies {
   display: flex;

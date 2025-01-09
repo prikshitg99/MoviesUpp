@@ -23,10 +23,10 @@ function App() {
   return (
     <div className={`App ${darkMode ? 'dark-mode' : 'light-mode'}`}>
       <button className="toggle-mode-btn" onClick={toggleMode}>
-        Switch to {darkMode ? 'Light' : 'Dark'} Mode
+        {darkMode ? <i className="fas fa-sun"></i> : <i className="fas fa-moon"></i>}
       </button>
       <h1 className="app-title">MoviesUpp <br/><br/>By Prikshit Grover<br/><br/></h1>
-      <Main />
+      <Main darkMode={darkMode} toggleMode={toggleMode} />
     </div>
   );
 }

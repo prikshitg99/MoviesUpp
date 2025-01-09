@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import axios from "axios";
+import debounce from "lodash.debounce";
 
 //components
 import MovieModal from "./MovieModal";
@@ -10,13 +11,13 @@ const api = "https://www.omdbapi.com/?";
 //api key
 const apiKey = "apikey=e9bfe59f";
 
-const Main = () => {
+const Main = ({ darkMode, toggleMode }) => {
   const [name, setName] = useState("");
   const [movies, setMovies] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [movieDetails, setMovieDetails] = useState({});
   const [message, setMessage] = useState('');
-  const [darkMode, setDarkMode] = useState(true);
+  const [cache, setCache] = useState({});
 
   //modal
   const [show, setShow] = useState(false);
@@ -26,7 +27,12 @@ const Main = () => {
   const [numberOfPages, setNumberOfPages] = useState();
   const [currentPage, setCurrentPage] = useState();
 
-  const getNumberOfPages = () => {
+  // filtering
+  const [filterGenre, setFilterGenre] = useState('');
+
+  const genres = ["Action", "Comedy", "Drama", "Horror", "Romance", "Sci-Fi"];
+
+  const getNumberOfPages = useCallback(() => {
     if (totalResults % 10 > 0) {
       const numberOfpages = parseInt(totalResults / 10 + 1);
       setNumberOfPages(numberOfpages);
@@ -34,7 +40,7 @@ const Main = () => {
     }
     const numberOfpages = parseInt(totalResults / 10);
     setNumberOfPages(numberOfpages);
-  };
+  }, [totalResults]);
 
   //modal config
   const showModal = () => {
@@ -46,22 +52,31 @@ const Main = () => {
     setMovieDetails({});
   };
 
-  const handleClose = () => {
-    hideModal();
-  };
-
   //get response from API
-  const getInfo = (pageNumber) => {
+  const getInfo = debounce((pageNumber) => {
     if (pageNumber) {
       axios
         .get(
-          api + apiKey + `&s=${name}` + "&type=movie" + `&page=${pageNumber}`
+          `${api}${apiKey}&s=${name}&type=movie&page=${pageNumber}`
         )
         .then((res) => {
           if (res.data.Response === "True") {
-            setMovies(res.data.Search);
-            setTotalResults(res.data.totalResults);
-            setMessage('');
+            const moviePromises = res.data.Search.map(movie => {
+              if (cache[movie.imdbID]) {
+                return Promise.resolve(cache[movie.imdbID]);
+              } else {
+                return axios.get(`${api}${apiKey}&i=${movie.imdbID}`).then(res => {
+                  setCache(prevCache => ({ ...prevCache, [movie.imdbID]: res.data }));
+                  return res.data;
+                });
+              }
+            });
+
+            Promise.all(moviePromises).then(moviesWithDetails => {
+              setMovies(moviesWithDetails);
+              setTotalResults(res.data.totalResults);
+              setMessage('');
+            });
           } else {
             setMovies([]);
             setMessage('No movie found for the search term');
@@ -70,31 +85,50 @@ const Main = () => {
       return;
     }
     axios
-      .get(api + apiKey + `&s=${name}` + "&type=movie" + "&page=1")
+      .get(`${api}${apiKey}&s=${name}&type=movie&page=1`)
       .then((res) => {
         if (res.data.Response === "True") {
-          setMovies(res.data.Search);
-          setTotalResults(res.data.totalResults);
-          setCurrentPage(1);
-          setMessage('');
+          const moviePromises = res.data.Search.map(movie => {
+            if (cache[movie.imdbID]) {
+              return Promise.resolve(cache[movie.imdbID]);
+            } else {
+              return axios.get(`${api}${apiKey}&i=${movie.imdbID}`).then(res => {
+                setCache(prevCache => ({ ...prevCache, [movie.imdbID]: res.data }));
+                return res.data;
+              });
+            }
+          });
+
+          Promise.all(moviePromises).then(moviesWithDetails => {
+            setMovies(moviesWithDetails);
+            setTotalResults(res.data.totalResults);
+            setCurrentPage(1);
+            setMessage('');
+          });
         } else {
           setMovies([]);
           setMessage('No movie found for the search term');
         }
       });
-  };
+  }, 300);
 
   //get details
   const getDetails = (e, id) => {
     e.preventDefault();
 
     setSelectedId(id);
-    axios.get(api + apiKey + `&i=${id}`).then((res) => {
-      if (res) {
-        setMovieDetails(res.data);
-        showModal();
-      }
-    });
+    if (cache[id]) {
+      setMovieDetails(cache[id]);
+      showModal();
+    } else {
+      axios.get(`${api}${apiKey}&i=${id}`).then((res) => {
+        if (res) {
+          setCache(prevCache => ({ ...prevCache, [id]: res.data }));
+          setMovieDetails(res.data);
+          showModal();
+        }
+      });
+    }
   };
 
   //submit the title entered
@@ -106,13 +140,13 @@ const Main = () => {
   //getnumberOFpageseffect
   useEffect(() => {
     getNumberOfPages();
-  });
+  }, [totalResults, getNumberOfPages]);
 
   const pages = [];
 
   for (let i = 1; i <= numberOfPages; i++) {
     pages.push(
-      <p key={i} onClick={(e) => goTo(i)}>
+      <p key={i} onClick={() => goTo(i)}>
         {i}
       </p>
     );
@@ -124,22 +158,27 @@ const Main = () => {
     window.scrollTo(0, 0);
   };
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
+  const filteredMoviesMemo = useMemo(() => {
+    let filtered = movies;
+
+    if (filterGenre) {
+      filtered = filtered.filter(movie => movie.Genre && movie.Genre.includes(filterGenre));
+    }
+
+    return filtered;
+  }, [movies, filterGenre]);
 
   return (
     <div className={darkMode ? 'dark-mode' : 'light-mode'}>
-      <button onClick={toggleDarkMode} className="toggle-mode-btn">
-        {darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-      </button>
       <form>
         <div className='searchBar'>
-          <label htmlFor='name'></label>
+          {/* <label htmlFor='movieName'>Movie Name</label> */}
           <input
             type='text'
+            id='movieName'
             name='name'
             placeholder='movie name'
+            autoComplete='off'
             onChange={(e) => setName(e.target.value)}
           />
           <button type='submit' onClick={(e) => handleSubmit(e)}>
@@ -148,11 +187,21 @@ const Main = () => {
         </div>
       </form>
 
+      <div className='filter-container'>
+        <label htmlFor='genreFilter'>Filter by Genre</label>
+        <select id='genreFilter' onChange={(e) => setFilterGenre(e.target.value)}>
+          <option value="">Select Genre</option>
+          {genres.map((genre) => (
+            <option key={genre} value={genre}>{genre}</option>
+          ))}
+        </select>
+      </div>
+
       {message && <p>{message}</p>}
 
-      {movies.length > 0 ? (
+      {filteredMoviesMemo.length > 0 ? (
         <div className='movies'>
-          {movies.map((movie) => (
+          {filteredMoviesMemo.map((movie) => (
             <div key={movie.imdbID} className='movie'>
               <img src={movie.Poster} alt='' />
               <div className='movie-title'>
@@ -169,7 +218,7 @@ const Main = () => {
               {movieDetails && selectedId === movie.imdbID && show ? (
                 <MovieModal
                   movieInfo={movieDetails}
-                  handleClose={handleClose}
+                  handleClose={hideModal}
                 />
               ) : (
                 <div className='modal display-none'></div>
@@ -177,18 +226,20 @@ const Main = () => {
             </div>
           ))}
         </div>
-      ) : null}
+      ) : (
+        <p>No movies found for the selected genre.</p>
+      )}
 
       {numberOfPages ? (
         <div className='pages'>
           {/* if prev page is 0 it wont show */}
           {currentPage - 1 === 0 ? null : (
-            <b onClick={(e) => goTo(currentPage - 1)}>{currentPage - 1}</b>
+            <b onClick={() => goTo(currentPage - 1)}>{currentPage - 1}</b>
           )}
-          <b onClick={(e) => goTo(currentPage)} className='actualPage'>
+          <b onClick={() => goTo(currentPage)} className='actualPage'>
             {currentPage}
           </b>
-          <b onClick={(e) => goTo(currentPage + 1)}>{currentPage + 1}</b>
+          <b onClick={() => goTo(currentPage + 1)}>{currentPage + 1}</b>
         </div>
       ) : null}
     </div>
